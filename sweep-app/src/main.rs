@@ -4,6 +4,10 @@ mod app;
 mod ui;
 
 fn main() -> eframe::Result<()> {
+    if std::env::args().any(|a| a == "--version") {
+        println!("sweep {}", env!("CARGO_PKG_VERSION"));
+        return Ok(());
+    }
     let options = eframe::NativeOptions {
         viewport: egui::ViewportBuilder::default()
             .with_title("Sweep")
