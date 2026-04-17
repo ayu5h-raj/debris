@@ -1,18 +1,6 @@
 use crate::app::SweepApp;
 use eframe::egui::{self, Color32, Frame, RichText, Stroke};
 
-fn format_bytes(bytes: u64) -> String {
-    if bytes >= 1_000_000_000 {
-        format!("{:.1} GB", bytes as f64 / 1_000_000_000.0)
-    } else if bytes >= 1_000_000 {
-        format!("{:.1} MB", bytes as f64 / 1_000_000.0)
-    } else if bytes >= 1_000 {
-        format!("{:.1} KB", bytes as f64 / 1_000.0)
-    } else {
-        format!("{} B", bytes)
-    }
-}
-
 pub fn draw_dev_caches(ui: &mut egui::Ui, app: &mut SweepApp) {
     Frame::new()
         .inner_margin(egui::Margin::symmetric(24, 24))
@@ -35,7 +23,7 @@ pub fn draw_dev_caches(ui: &mut egui::Ui, app: &mut SweepApp) {
             let total_bytes: u64 = app.dev_caches.iter().map(|c| c.size_bytes).sum();
             let count = app.dev_caches.len();
             ui.label(
-                RichText::new(format!("{} caches — {}", count, format_bytes(total_bytes)))
+                RichText::new(format!("{} caches — {}", count, super::format_bytes(total_bytes)))
                     .color(Color32::from_gray(180)),
             );
             ui.add_space(10.0);
@@ -79,7 +67,7 @@ pub fn draw_dev_caches(ui: &mut egui::Ui, app: &mut SweepApp) {
                                         ui.add_space(8.0);
 
                                         ui.label(
-                                            RichText::new(format_bytes(*size))
+                                            RichText::new(super::format_bytes(*size))
                                                 .color(Color32::from_gray(180)),
                                         );
                                     },

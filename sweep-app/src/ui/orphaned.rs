@@ -1,18 +1,6 @@
 use crate::app::SweepApp;
 use eframe::egui::{self, Color32, Frame, RichText, Stroke};
 
-fn format_bytes(bytes: u64) -> String {
-    if bytes >= 1_000_000_000 {
-        format!("{:.1} GB", bytes as f64 / 1_000_000_000.0)
-    } else if bytes >= 1_000_000 {
-        format!("{:.1} MB", bytes as f64 / 1_000_000.0)
-    } else if bytes >= 1_000 {
-        format!("{:.1} KB", bytes as f64 / 1_000.0)
-    } else {
-        format!("{} B", bytes)
-    }
-}
-
 pub fn draw_orphaned(ui: &mut egui::Ui, app: &mut SweepApp) {
     Frame::new()
         .inner_margin(egui::Margin::symmetric(24, 24))
@@ -44,13 +32,13 @@ pub fn draw_orphaned(ui: &mut egui::Ui, app: &mut SweepApp) {
             let total_bytes: u64 = app.orphans.iter().map(|o| o.total_size).sum();
             let count = app.orphans.len();
             ui.label(
-                RichText::new(format!("{} items — {}", count, format_bytes(total_bytes)))
+                RichText::new(format!("{} items — {}", count, super::format_bytes(total_bytes)))
                     .color(Color32::from_gray(180)),
             );
             ui.add_space(10.0);
 
             // Inline confirmation banner
-            if app.confirm_delete {
+            if app.confirm_delete && !app.selected.is_empty() {
                 let sel_count = app.selected.len();
                 let sel_bytes: u64 = app
                     .selected
@@ -70,7 +58,7 @@ pub fn draw_orphaned(ui: &mut egui::Ui, app: &mut SweepApp) {
                                 RichText::new(format!(
                                     "Delete {} items · {}?",
                                     sel_count,
-                                    format_bytes(sel_bytes)
+                                    super::format_bytes(sel_bytes)
                                 ))
                                 .color(Color32::WHITE),
                             );
@@ -125,7 +113,6 @@ pub fn draw_orphaned(ui: &mut egui::Ui, app: &mut SweepApp) {
             egui::ScrollArea::vertical().show(ui, |ui| {
                 // Collect actions to apply after the loop (borrow checker)
                 let mut to_delete_single: Option<usize> = None;
-                let mut toggle_selected: Option<usize> = None;
 
                 let orphans_snapshot: Vec<_> = app
                     .orphans
@@ -145,7 +132,11 @@ pub fn draw_orphaned(ui: &mut egui::Ui, app: &mut SweepApp) {
                                 // Checkbox
                                 let mut checked = app.selected.contains(&idx);
                                 if ui.checkbox(&mut checked, "").changed() {
-                                    toggle_selected = Some(idx);
+                                    if checked {
+                                        app.selected.insert(idx);
+                                    } else {
+                                        app.selected.remove(&idx);
+                                    }
                                 }
 
                                 // Name
@@ -183,7 +174,7 @@ pub fn draw_orphaned(ui: &mut egui::Ui, app: &mut SweepApp) {
 
                                         // Size
                                         ui.label(
-                                            RichText::new(format_bytes(*size))
+                                            RichText::new(super::format_bytes(*size))
                                                 .color(Color32::from_gray(180)),
                                         );
                                     },
@@ -191,15 +182,6 @@ pub fn draw_orphaned(ui: &mut egui::Ui, app: &mut SweepApp) {
                             });
                         });
                     ui.add_space(4.0);
-                }
-
-                // Apply deferred mutations
-                if let Some(idx) = toggle_selected {
-                    if app.selected.contains(&idx) {
-                        app.selected.remove(&idx);
-                    } else {
-                        app.selected.insert(idx);
-                    }
                 }
 
                 if let Some(idx) = to_delete_single {
@@ -219,6 +201,10 @@ pub fn draw_orphaned(ui: &mut egui::Ui, app: &mut SweepApp) {
                 }
             });
 
+            if app.selected.is_empty() {
+                app.confirm_delete = false;
+            }
+
             // "Delete N Selected" button at bottom
             if !app.selected.is_empty() && !app.confirm_delete {
                 ui.add_space(12.0);
@@ -231,7 +217,7 @@ pub fn draw_orphaned(ui: &mut egui::Ui, app: &mut SweepApp) {
                     .sum();
 
                 let del_btn = egui::Button::new(
-                    RichText::new(format!("Delete {} Selected ({})", n, format_bytes(del_bytes)))
+                    RichText::new(format!("Delete {} Selected ({})", n, super::format_bytes(del_bytes)))
                         .color(Color32::WHITE)
                         .strong(),
                 )

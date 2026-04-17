@@ -1,18 +1,6 @@
 use crate::app::SweepApp;
 use eframe::egui::{self, Color32, Frame, RichText, Sense, Stroke, Vec2};
 
-fn format_bytes(bytes: u64) -> String {
-    if bytes >= 1_000_000_000 {
-        format!("{:.1} GB", bytes as f64 / 1_000_000_000.0)
-    } else if bytes >= 1_000_000 {
-        format!("{:.1} MB", bytes as f64 / 1_000_000.0)
-    } else if bytes >= 1_000 {
-        format!("{:.1} KB", bytes as f64 / 1_000.0)
-    } else {
-        format!("{} B", bytes)
-    }
-}
-
 pub fn draw_overview(ui: &mut egui::Ui, app: &SweepApp) {
     Frame::new()
         .inner_margin(egui::Margin::symmetric(24, 24))
@@ -93,11 +81,11 @@ pub fn draw_overview(ui: &mut egui::Ui, app: &SweepApp) {
                         // Stats column
                         ui.vertical(|ui| {
                             ui.add_space(16.0);
-                            stat_row(ui, "Used", &format_bytes(used), Color32::from_rgb(59, 130, 246));
+                            stat_row(ui, "Used", &super::format_bytes(used), Color32::from_rgb(59, 130, 246));
                             ui.add_space(8.0);
-                            stat_row(ui, "Free", &format_bytes(free), Color32::from_gray(150));
+                            stat_row(ui, "Free", &super::format_bytes(free), Color32::from_gray(150));
                             ui.add_space(8.0);
-                            stat_row(ui, "Total", &format_bytes(total), Color32::from_gray(200));
+                            stat_row(ui, "Total", &super::format_bytes(total), Color32::from_gray(200));
                         });
                     });
 
@@ -176,7 +164,7 @@ fn category_bar(ui: &mut egui::Ui, label: &str, bytes: u64, total: u64, color: C
 
     ui.add_space(2.0);
     ui.label(
-        RichText::new(format_bytes(bytes))
+        RichText::new(super::format_bytes(bytes))
             .size(11.0)
             .color(Color32::from_gray(150)),
     );

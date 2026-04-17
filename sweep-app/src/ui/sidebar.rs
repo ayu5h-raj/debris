@@ -28,28 +28,28 @@ pub fn draw_sidebar(ui: &mut Ui, app: &mut SweepApp) {
             nav_item(ui, app, Section::Orphaned, "Orphaned", orphan_count);
             nav_item(ui, app, Section::DevCaches, "Dev Caches", cache_count);
 
-            // Push scan button to the bottom
-            let available = ui.available_height();
-            ui.add_space(available - 36.0);
+            ui.with_layout(egui::Layout::bottom_up(egui::Align::Center), |ui| {
+                ui.add_space(16.0);
 
-            // Scan button
-            let button_color = if app.scanning {
-                Color32::from_rgb(55, 65, 81)
-            } else {
-                Color32::from_rgb(59, 130, 246)
-            };
+                // Scan button
+                let button_color = if app.scanning {
+                    Color32::from_rgb(55, 65, 81)
+                } else {
+                    Color32::from_rgb(59, 130, 246)
+                };
 
-            let scan_label = if app.scanning { "Scanning…" } else { "Scan" };
+                let scan_label = if app.scanning { "Scanning…" } else { "Scan" };
 
-            let btn = egui::Button::new(RichText::new(scan_label).color(Color32::WHITE).strong())
-                .fill(button_color)
-                .stroke(Stroke::NONE)
-                .min_size(Vec2::new(156.0, 32.0));
+                let btn = egui::Button::new(RichText::new(scan_label).color(Color32::WHITE).strong())
+                    .fill(button_color)
+                    .stroke(Stroke::NONE)
+                    .min_size(Vec2::new(156.0, 32.0));
 
-            let response = ui.add_enabled(!app.scanning, btn);
-            if response.clicked() {
-                app.start_scan();
-            }
+                let response = ui.add_enabled(!app.scanning, btn);
+                if response.clicked() {
+                    app.start_scan();
+                }
+            });
         });
 }
 
