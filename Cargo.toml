@@ -1,5 +1,5 @@
 [workspace]
-members = ["debris-db", "debris-core", "debris-app"]
+members = ["debris-db", "debris-core", "debris-app", "debris-tui"]
 resolver = "2"
 
 [workspace.package]

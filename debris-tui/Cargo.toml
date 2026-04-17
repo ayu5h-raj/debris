@@ -1,0 +1,16 @@
+[package]
+name = "debris-tui"
+version = "0.2.0"
+edition = "2021"
+license.workspace = true
+repository.workspace = true
+
+[[bin]]
+name = "debris-tui"
+path = "src/main.rs"
+
+[dependencies]
+debris-core = { path = "../debris-core" }
+ratatui = "0.29"
+crossterm = "0.28"
+dirs = "5"
