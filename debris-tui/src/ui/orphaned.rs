@@ -37,13 +37,11 @@ pub fn render_orphaned(f: &mut Frame, area: Rect, app: &TuiApp) {
             format_bytes(total),
         ));
 
-    let mut sorted: Vec<(usize, &debris_core::OrphanItem)> = app.orphans.iter().enumerate().collect();
-    sorted.sort_unstable_by(|a, b| b.1.total_size.cmp(&a.1.total_size));
-
-    let items: Vec<ListItem> = sorted
+    let items: Vec<ListItem> = app.orphans
         .iter()
-        .map(|(orig_idx, item)| {
-            let selected = app.selected.contains(orig_idx);
+        .enumerate()
+        .map(|(idx, item)| {
+            let selected = app.selected.contains(&idx);
             let prefix = if selected { "✓ " } else { "  " };
             let source_tag = match item.source {
                 debris_core::OrphanSource::KnownDb => "[DB]",
@@ -62,22 +60,13 @@ pub fn render_orphaned(f: &mut Frame, area: Rect, app: &TuiApp) {
                     Style::default().fg(Color::DarkGray),
                 ),
             ]);
-            let style = if selected {
-                Style::default().bg(Color::DarkGray)
-            } else {
-                Style::default()
-            };
+            let style = if selected { Style::default().bg(Color::DarkGray) } else { Style::default() };
             ListItem::new(line).style(style)
         })
         .collect();
 
-    let display_cursor = sorted
-        .iter()
-        .position(|(orig, _)| *orig == app.orphan_cursor)
-        .unwrap_or(0);
-
     let mut state = ListState::default();
-    state.select(Some(display_cursor));
+    state.select(Some(app.orphan_cursor.min(app.orphans.len().saturating_sub(1))));
 
     f.render_stateful_widget(
         List::new(items)

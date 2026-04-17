@@ -89,6 +89,9 @@ impl TuiApp {
         if done {
             self.scanning = false;
             self.scan_rx = None;
+            self.orphans.sort_unstable_by(|a, b| b.total_size.cmp(&a.total_size));
+            self.dev_caches.sort_unstable_by(|a, b| b.size_bytes.cmp(&a.size_bytes));
+            self.launch_agents.sort_unstable_by(|a, b| b.size_bytes.cmp(&a.size_bytes));
         }
     }
 

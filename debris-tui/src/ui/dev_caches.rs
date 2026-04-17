@@ -23,12 +23,9 @@ pub fn render_dev_caches(f: &mut Frame, area: Rect, app: &TuiApp) {
         .borders(Borders::ALL)
         .title(format!(" Dev Caches — {} caches  {}  d clear ", app.dev_caches.len(), format_bytes(total)));
 
-    let mut sorted: Vec<(usize, &debris_core::DevCacheItem)> = app.dev_caches.iter().enumerate().collect();
-    sorted.sort_unstable_by(|a, b| b.1.size_bytes.cmp(&a.1.size_bytes));
-
-    let items: Vec<ListItem> = sorted
+    let items: Vec<ListItem> = app.dev_caches
         .iter()
-        .map(|(_, item)| {
+        .map(|item| {
             ListItem::new(Line::from(vec![
                 Span::raw(format!("  {:<30}", item.name)),
                 Span::styled(
@@ -39,13 +36,8 @@ pub fn render_dev_caches(f: &mut Frame, area: Rect, app: &TuiApp) {
         })
         .collect();
 
-    let display_cursor = sorted
-        .iter()
-        .position(|(orig, _)| *orig == app.cache_cursor)
-        .unwrap_or(0);
-
     let mut state = ListState::default();
-    state.select(Some(display_cursor.min(sorted.len().saturating_sub(1))));
+    state.select(Some(app.cache_cursor.min(app.dev_caches.len().saturating_sub(1))));
 
     f.render_stateful_widget(
         List::new(items)
