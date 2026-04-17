@@ -89,12 +89,13 @@ pub fn draw_dev_caches(ui: &mut egui::Ui, app: &mut SweepApp) {
             let mut to_confirm: Option<usize> = None;
 
             egui::ScrollArea::vertical().show(ui, |ui| {
-                let snapshot: Vec<_> = app
+                let mut snapshot: Vec<_> = app
                     .dev_caches
                     .iter()
                     .enumerate()
                     .map(|(i, c)| (i, c.name.clone(), c.size_bytes))
                     .collect();
+                snapshot.sort_unstable_by(|a, b| b.2.cmp(&a.2));
 
                 for (idx, name, size) in &snapshot {
                     let idx = *idx;

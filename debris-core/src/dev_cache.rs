@@ -14,14 +14,17 @@ struct CacheDef {
 }
 
 const CACHES: &[CacheDef] = &[
-    CacheDef { name: "npm",    relative_path: ".npm" },
-    CacheDef { name: "yarn",   relative_path: "Library/Caches/Yarn" },
-    CacheDef { name: "uv",     relative_path: ".cache/uv" },
-    CacheDef { name: "pip",    relative_path: "Library/Caches/pip" },
-    CacheDef { name: "Go modules", relative_path: "go/pkg/mod" },
-    CacheDef { name: "Cargo registry", relative_path: ".cargo/registry" },
-    CacheDef { name: "Puppeteer", relative_path: ".cache/puppeteer" },
-    CacheDef { name: "node-gyp", relative_path: "Library/Caches/node-gyp" },
+    CacheDef { name: "npm",                    relative_path: ".npm" },
+    CacheDef { name: "yarn",                   relative_path: "Library/Caches/Yarn" },
+    CacheDef { name: "uv",                     relative_path: ".cache/uv" },
+    CacheDef { name: "pip",                    relative_path: "Library/Caches/pip" },
+    CacheDef { name: "Go modules",             relative_path: "go/pkg/mod" },
+    CacheDef { name: "Cargo registry",         relative_path: ".cargo/registry" },
+    CacheDef { name: "Puppeteer",              relative_path: ".cache/puppeteer" },
+    CacheDef { name: "node-gyp",               relative_path: "Library/Caches/node-gyp" },
+    CacheDef { name: "Docker buildx",          relative_path: ".docker/buildx" },
+    CacheDef { name: "Docker Desktop logs",    relative_path: "Library/Containers/com.docker.docker/Data/log" },
+    CacheDef { name: "Docker Desktop support", relative_path: "Library/Application Support/Docker Desktop" },
 ];
 
 pub fn scan_dev_caches(home: &Path) -> Vec<DevCacheItem> {

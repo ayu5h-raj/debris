@@ -101,12 +101,13 @@ pub fn draw_launch_agents(ui: &mut Ui, app: &mut SweepApp) {
             let mut to_confirm: Option<usize> = None;
 
             ScrollArea::vertical().show(ui, |ui| {
-                let snapshot: Vec<_> = app
+                let mut snapshot: Vec<_> = app
                     .launch_agents
                     .iter()
                     .enumerate()
                     .map(|(i, a)| (i, a.name.clone(), a.size_bytes))
                     .collect();
+                snapshot.sort_unstable_by(|a, b| b.2.cmp(&a.2));
 
                 for (idx, name, size) in &snapshot {
                     let idx = *idx;

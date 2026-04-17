@@ -37,6 +37,31 @@ pub fn draw_orphaned(ui: &mut egui::Ui, app: &mut SweepApp) {
             );
             ui.add_space(10.0);
 
+            // "Delete N Selected" button — shown above list so it's never clipped
+            if !app.selected.is_empty() && !app.confirm_delete {
+                let n = app.selected.len();
+                let del_bytes: u64 = app
+                    .selected
+                    .iter()
+                    .filter_map(|&i| app.orphans.get(i))
+                    .map(|o| o.total_size)
+                    .sum();
+
+                let del_btn = egui::Button::new(
+                    RichText::new(format!("Delete {} Selected ({})", n, super::format_bytes(del_bytes)))
+                        .color(Color32::WHITE)
+                        .strong(),
+                )
+                .fill(Color32::from_rgb(220, 38, 38))
+                .stroke(Stroke::NONE)
+                .min_size(egui::Vec2::new(200.0, 32.0));
+
+                if ui.add(del_btn).clicked() {
+                    app.confirm_delete = true;
+                }
+                ui.add_space(8.0);
+            }
+
             // Inline confirmation banner
             if app.confirm_delete && !app.selected.is_empty() {
                 let sel_count = app.selected.len();
@@ -114,12 +139,13 @@ pub fn draw_orphaned(ui: &mut egui::Ui, app: &mut SweepApp) {
                 // Collect actions to apply after the loop (borrow checker)
                 let mut to_delete_single: Option<usize> = None;
 
-                let orphans_snapshot: Vec<_> = app
+                let mut orphans_snapshot: Vec<_> = app
                     .orphans
                     .iter()
                     .enumerate()
                     .map(|(i, o)| (i, o.name.clone(), o.total_size))
                     .collect();
+                orphans_snapshot.sort_unstable_by(|a, b| b.2.cmp(&a.2));
 
                 for (idx, name, size) in &orphans_snapshot {
                     let idx = *idx;
@@ -203,31 +229,6 @@ pub fn draw_orphaned(ui: &mut egui::Ui, app: &mut SweepApp) {
 
             if app.selected.is_empty() {
                 app.confirm_delete = false;
-            }
-
-            // "Delete N Selected" button at bottom
-            if !app.selected.is_empty() && !app.confirm_delete {
-                ui.add_space(12.0);
-                let n = app.selected.len();
-                let del_bytes: u64 = app
-                    .selected
-                    .iter()
-                    .filter_map(|&i| app.orphans.get(i))
-                    .map(|o| o.total_size)
-                    .sum();
-
-                let del_btn = egui::Button::new(
-                    RichText::new(format!("Delete {} Selected ({})", n, super::format_bytes(del_bytes)))
-                        .color(Color32::WHITE)
-                        .strong(),
-                )
-                .fill(Color32::from_rgb(220, 38, 38))
-                .stroke(Stroke::NONE)
-                .min_size(egui::Vec2::new(200.0, 32.0));
-
-                if ui.add(del_btn).clicked() {
-                    app.confirm_delete = true;
-                }
             }
         });
 }
