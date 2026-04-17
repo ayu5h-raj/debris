@@ -1,0 +1,13 @@
+[package]
+name = "sweep-app"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "sweep"
+path = "src/main.rs"
+
+[dependencies]
+sweep-core = { path = "../sweep-core" }
+eframe = "0.34"
+egui = "0.34"

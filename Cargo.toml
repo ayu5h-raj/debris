@@ -1,0 +1,7 @@
+[workspace]
+members = ["sweep-db", "sweep-core", "sweep-app"]
+resolver = "2"
+
+[workspace.dependencies]
+serde = { version = "1", features = ["derive"] }
+toml = "0.8"

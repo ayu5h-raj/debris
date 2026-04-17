@@ -1,0 +1,10 @@
+[package]
+name = "sweep-core"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+sweep-db = { path = "../sweep-db" }
+serde = { workspace = true }
+plist = "1"
+nix = { version = "0.31", features = ["fs"] }
