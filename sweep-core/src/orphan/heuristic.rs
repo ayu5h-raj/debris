@@ -16,7 +16,7 @@ fn installed_bundle_ids(applications: &Path) -> HashSet<String> {
     let Ok(entries) = fs::read_dir(applications) else { return ids };
     for entry in entries.flatten() {
         let path = entry.path();
-        if path.extension().map_or(false, |e| e == "app") {
+        if path.extension().is_some_and(|e| e == "app") {
             let plist_path = path.join("Contents/Info.plist");
             if let Ok(val) = plist::from_file::<_, plist::Value>(&plist_path) {
                 if let Some(id) = val

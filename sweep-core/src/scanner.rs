@@ -20,15 +20,23 @@ pub fn run_scan(home: PathBuf, applications: PathBuf) -> mpsc::Receiver<ScanEven
     let (tx, rx) = mpsc::channel();
 
     thread::spawn(move || {
-        // Known-paths scan
         let entries = load_app_entries();
+        let mut seen_paths: std::collections::HashSet<std::path::PathBuf> = std::collections::HashSet::new();
+
+        // Known-paths scan
         for item in scan_known(&entries, &home, &applications) {
+            for p in &item.paths {
+                seen_paths.insert(p.clone());
+            }
             let _ = tx.send(ScanEvent::OrphanFound(item));
         }
 
-        // Heuristic scan
+        // Heuristic scan — skip paths already reported by known scanner
         for item in scan_heuristic(&home, &applications) {
-            let _ = tx.send(ScanEvent::OrphanFound(item));
+            let already_seen = item.paths.iter().any(|p| seen_paths.contains(p));
+            if !already_seen {
+                let _ = tx.send(ScanEvent::OrphanFound(item));
+            }
         }
 
         // Dev caches

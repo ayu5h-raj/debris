@@ -23,6 +23,6 @@ class Sweep < Formula
   end
 
   test do
-    assert_match "sweep", shell_output("#{bin}/sweep --version 2>&1", 1)
+    assert_match "sweep", shell_output("#{bin}/sweep --version")
   end
 end

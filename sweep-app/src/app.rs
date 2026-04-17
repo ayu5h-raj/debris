@@ -52,8 +52,10 @@ impl SweepApp {
 }
 
 fn setup_theme(ctx: &egui::Context) {
-    let mut style = Style::default();
-    style.visuals = Visuals::dark();
+    let mut style = Style {
+        visuals: Visuals::dark(),
+        ..Default::default()
+    };
     style.visuals.panel_fill = Color32::from_rgb(20, 20, 20);
     style.visuals.window_fill = Color32::from_rgb(20, 20, 20);
     style.visuals.faint_bg_color = Color32::from_rgb(26, 26, 26);
