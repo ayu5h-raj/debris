@@ -1,0 +1,132 @@
+[[apps]]
+name = "Google Chrome"
+app_bundle = "Google Chrome.app"
+paths = [
+  "Library/Application Support/Google/Chrome",
+  "Library/Caches/Google/Chrome",
+  "Library/Caches/com.google.Chrome",
+  "Library/Preferences/com.google.Chrome.plist",
+]
+
+[[apps]]
+name = "Firefox"
+app_bundle = "Firefox.app"
+paths = [
+  "Library/Application Support/Firefox",
+  "Library/Caches/Firefox",
+  "Library/Preferences/org.mozilla.firefox.plist",
+]
+
+[[apps]]
+name = "Slack"
+app_bundle = "Slack.app"
+paths = [
+  "Library/Application Support/Slack",
+  "Library/Caches/com.tinyspeck.slackmacgap",
+  "Library/Preferences/com.tinyspeck.slackmacgap.plist",
+]
+
+[[apps]]
+name = "Zoom"
+app_bundle = "zoom.us.app"
+paths = [
+  "Library/Application Support/zoom.us",
+  "Library/Caches/us.zoom.xos",
+  "Library/Preferences/us.zoom.xos.plist",
+]
+
+[[apps]]
+name = "Zed"
+app_bundle = "Zed.app"
+paths = [
+  "Library/Application Support/Zed",
+  "Library/Caches/Zed",
+  "Library/Preferences/dev.zed.Zed.plist",
+]
+
+[[apps]]
+name = "VS Code"
+app_bundle = "Visual Studio Code.app"
+paths = [
+  "Library/Application Support/Code",
+  "Library/Caches/com.microsoft.VSCode",
+  "Library/Preferences/com.microsoft.VSCode.plist",
+]
+
+[[apps]]
+name = "Discord"
+app_bundle = "Discord.app"
+paths = [
+  "Library/Application Support/discord",
+  "Library/Caches/com.hnc.Discord",
+  "Library/Preferences/com.hnc.Discord.plist",
+]
+
+[[apps]]
+name = "Steam"
+app_bundle = "Steam.app"
+paths = [
+  "Library/Application Support/Steam",
+  "Library/Caches/com.valvesoftware.steam",
+  "Library/Preferences/com.valvesoftware.steam.plist",
+]
+
+[[apps]]
+name = "Notion"
+app_bundle = "Notion.app"
+paths = [
+  "Library/Application Support/Notion",
+  "Library/Caches/notion.id",
+  "Library/Preferences/notion.id.plist",
+]
+
+[[apps]]
+name = "Spotify"
+app_bundle = "Spotify.app"
+paths = [
+  "Library/Application Support/Spotify",
+  "Library/Caches/com.spotify.client",
+  "Library/Preferences/com.spotify.client.plist",
+]
+
+[[apps]]
+name = "Postman"
+app_bundle = "Postman.app"
+paths = [
+  "Library/Application Support/Postman",
+  "Library/Caches/com.postmanlabs.mac",
+  "Library/Preferences/com.postmanlabs.mac.plist",
+]
+
+[[apps]]
+name = "Figma"
+app_bundle = "Figma.app"
+paths = [
+  "Library/Application Support/Figma",
+  "Library/Caches/com.figma.Desktop",
+  "Library/Preferences/com.figma.Desktop.plist",
+]
+
+[[apps]]
+name = "Cursor"
+app_bundle = "Cursor.app"
+paths = [
+  "Library/Application Support/Cursor",
+  "Library/Caches/com.todesktop.230313mzl4w4u92",
+  "Library/Preferences/com.todesktop.230313mzl4w4u92.plist",
+]
+
+[[apps]]
+name = "Comet"
+app_bundle = "Comet.app"
+paths = [
+  "Library/Application Support/Comet",
+  "Library/Caches/Comet",
+]
+
+[[apps]]
+name = "Gemini CLI"
+app_bundle = "Gemini.app"
+paths = [
+  ".gemini",
+]
