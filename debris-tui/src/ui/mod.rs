@@ -30,7 +30,7 @@ pub fn render(f: &mut Frame, app: &mut TuiApp) {
     };
 
     let tabs = Tabs::new(vec![
-        format!("Overview"),
+        "Overview".to_string(),
         format!("Orphaned ({})", app.orphans.len()),
         format!("Dev Caches ({})", app.dev_caches.len()),
         format!("Launch Agents ({})", app.launch_agents.len()),

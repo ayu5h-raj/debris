@@ -29,7 +29,7 @@ pub fn render_overview(f: &mut Frame, area: Rect, app: &TuiApp) {
     };
 
     let pct = if disk.total_bytes > 0 {
-        (disk.used_bytes as f64 / disk.total_bytes as f64 * 100.0) as u16
+        ((disk.used_bytes as f64 / disk.total_bytes as f64 * 100.0) as u16).min(100)
     } else {
         0
     };

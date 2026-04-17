@@ -57,7 +57,7 @@ pub fn render_dev_caches(f: &mut Frame, area: Rect, app: &TuiApp) {
     );
 
     if let Some(ConfirmAction::ClearCache(idx)) = &app.confirm {
-        if let Some((_, item)) = sorted.get(*idx) {
+        if let Some(item) = app.dev_caches.get(*idx) {
             let msg = format!("Clear \"{}\" ({})? [y/n]", item.name, format_bytes(item.size_bytes));
             render_confirm_popup(f, area, &msg);
         }

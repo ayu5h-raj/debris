@@ -37,7 +37,7 @@ pub struct TuiApp {
 
 impl TuiApp {
     pub fn new() -> Self {
-        let home = dirs::home_dir().unwrap_or_default();
+        let home = dirs::home_dir().unwrap_or_else(|| std::path::PathBuf::from("/tmp"));
         let applications = std::path::PathBuf::from("/Applications");
         let disk_info = get_disk_info(&home).ok();
         let scan_rx = run_scan(home, applications);
@@ -59,7 +59,7 @@ impl TuiApp {
     }
 
     pub fn start_scan(&mut self) {
-        let home = dirs::home_dir().unwrap_or_default();
+        let home = dirs::home_dir().unwrap_or_else(|| std::path::PathBuf::from("/tmp"));
         let applications = std::path::PathBuf::from("/Applications");
         self.disk_info = get_disk_info(&home).ok();
         self.orphans.clear();

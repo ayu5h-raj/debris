@@ -58,7 +58,7 @@ pub fn render_launch_agents(f: &mut Frame, area: Rect, app: &TuiApp) {
     );
 
     if let Some(ConfirmAction::DeleteAgent(idx)) = &app.confirm {
-        if let Some((_, item)) = sorted.get(*idx) {
+        if let Some(item) = app.launch_agents.get(*idx) {
             let msg = format!("Delete \"{}\"? [y/n]", item.name);
             let popup_area = Layout::vertical([
                 Constraint::Percentage(40),
