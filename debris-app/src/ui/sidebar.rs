@@ -23,10 +23,12 @@ pub fn draw_sidebar(ui: &mut Ui, app: &mut SweepApp) {
             // Nav items
             let orphan_count = app.orphans.len();
             let cache_count = app.dev_caches.len();
+            let agent_count = app.launch_agents.len();
 
             nav_item(ui, app, Section::Overview, "Overview", 0);
             nav_item(ui, app, Section::Orphaned, "Orphaned", orphan_count);
             nav_item(ui, app, Section::DevCaches, "Dev Caches", cache_count);
+            nav_item(ui, app, Section::LaunchAgents, "Launch Agents", agent_count);
 
             ui.with_layout(egui::Layout::bottom_up(egui::Align::Center), |ui| {
                 ui.add_space(16.0);

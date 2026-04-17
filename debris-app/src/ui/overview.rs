@@ -102,6 +102,7 @@ pub fn draw_overview(ui: &mut egui::Ui, app: &SweepApp) {
 
                     let orphan_bytes: u64 = app.orphans.iter().map(|o| o.total_size).sum();
                     let cache_bytes: u64 = app.dev_caches.iter().map(|c| c.size_bytes).sum();
+                    let launch_bytes: u64 = app.launch_agents.iter().map(|a| a.size_bytes).sum();
 
                     if total > 0 {
                         category_bar(
@@ -118,6 +119,14 @@ pub fn draw_overview(ui: &mut egui::Ui, app: &SweepApp) {
                             cache_bytes,
                             total,
                             Color32::from_rgb(234, 179, 8),
+                        );
+                        ui.add_space(8.0);
+                        category_bar(
+                            ui,
+                            "Launch Agents",
+                            launch_bytes,
+                            total,
+                            Color32::from_rgb(168, 85, 247),
                         );
                     }
                 }

@@ -4,6 +4,7 @@ use std::path::PathBuf;
 pub enum OrphanSource {
     KnownDb,
     Heuristic,
+    Containers,
 }
 
 #[derive(Debug, Clone)]
@@ -14,5 +15,7 @@ pub struct OrphanItem {
     pub source: OrphanSource,
 }
 
-pub mod known;
+pub mod containers;
 pub mod heuristic;
+pub mod known;
+pub mod util;

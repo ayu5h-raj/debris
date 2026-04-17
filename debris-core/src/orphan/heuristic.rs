@@ -1,6 +1,5 @@
-use crate::{dir_size, orphan::{OrphanItem, OrphanSource}};
+use crate::{dir_size, orphan::{util::installed_bundle_ids, OrphanItem, OrphanSource}};
 use std::{
-    collections::HashSet,
     fs,
     path::Path,
 };
@@ -9,27 +8,6 @@ fn is_bundle_id(name: &str) -> bool {
     let parts: Vec<&str> = name.split('.').collect();
     parts.len() >= 2
         && matches!(parts[0], "com" | "org" | "io" | "net" | "app" | "co")
-}
-
-fn installed_bundle_ids(applications: &Path) -> HashSet<String> {
-    let mut ids = HashSet::new();
-    let Ok(entries) = fs::read_dir(applications) else { return ids };
-    for entry in entries.flatten() {
-        let path = entry.path();
-        if path.extension().is_some_and(|e| e == "app") {
-            let plist_path = path.join("Contents/Info.plist");
-            if let Ok(val) = plist::from_file::<_, plist::Value>(&plist_path) {
-                if let Some(id) = val
-                    .as_dictionary()
-                    .and_then(|d| d.get("CFBundleIdentifier"))
-                    .and_then(|v| v.as_string())
-                {
-                    ids.insert(id.to_lowercase());
-                }
-            }
-        }
-    }
-    ids
 }
 
 pub fn scan_heuristic(home: &Path, applications: &Path) -> Vec<OrphanItem> {

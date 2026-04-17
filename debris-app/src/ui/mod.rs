@@ -2,6 +2,7 @@ pub mod sidebar;
 pub mod overview;
 pub mod orphaned;
 pub mod dev_caches;
+pub mod launch_agents;
 
 pub(crate) fn format_bytes(bytes: u64) -> String {
     if bytes >= 1_000_000_000 {

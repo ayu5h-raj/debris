@@ -28,8 +28,65 @@ pub fn draw_dev_caches(ui: &mut egui::Ui, app: &mut SweepApp) {
             );
             ui.add_space(10.0);
 
-            // Collect which index to clear (deferred to avoid borrow conflict)
-            let mut to_clear: Option<usize> = None;
+            // Inline confirmation banner
+            if let Some(pending_idx) = app.confirm_clear_cache {
+                if let Some(cache) = app.dev_caches.get(pending_idx) {
+                    let name = cache.name.clone();
+                    let size = cache.size_bytes;
+
+                    Frame::new()
+                        .fill(Color32::from_rgb(30, 20, 20))
+                        .corner_radius(6.0)
+                        .stroke(Stroke::new(1.0, Color32::from_rgb(239, 68, 68)))
+                        .inner_margin(egui::Margin::symmetric(12, 10))
+                        .show(ui, |ui| {
+                            ui.horizontal(|ui| {
+                                ui.label(
+                                    RichText::new(format!(
+                                        "Clear \"{}\" · {}?",
+                                        name,
+                                        super::format_bytes(size)
+                                    ))
+                                    .color(Color32::WHITE),
+                                );
+                                ui.with_layout(
+                                    egui::Layout::right_to_left(egui::Align::Center),
+                                    |ui| {
+                                        let del_btn = egui::Button::new(
+                                            RichText::new("Clear").color(Color32::WHITE),
+                                        )
+                                        .fill(Color32::from_rgb(220, 38, 38))
+                                        .stroke(Stroke::NONE);
+
+                                        if ui.add(del_btn).clicked() {
+                                            if let Some(item) = app.dev_caches.get(pending_idx) {
+                                                let _ = debris_core::delete_path(&item.path);
+                                            }
+                                            app.dev_caches.remove(pending_idx);
+                                            app.confirm_clear_cache = None;
+                                        }
+
+                                        ui.add_space(8.0);
+
+                                        let cancel_btn = egui::Button::new(
+                                            RichText::new("Cancel").color(Color32::WHITE),
+                                        )
+                                        .fill(Color32::from_gray(50))
+                                        .stroke(Stroke::NONE);
+                                        if ui.add(cancel_btn).clicked() {
+                                            app.confirm_clear_cache = None;
+                                        }
+                                    },
+                                );
+                            });
+                        });
+                    ui.add_space(10.0);
+                } else {
+                    app.confirm_clear_cache = None;
+                }
+            }
+
+            let mut to_confirm: Option<usize> = None;
 
             egui::ScrollArea::vertical().show(ui, |ui| {
                 let snapshot: Vec<_> = app
@@ -61,7 +118,7 @@ pub fn draw_dev_caches(ui: &mut egui::Ui, app: &mut SweepApp) {
                                         .stroke(Stroke::NONE);
 
                                         if ui.add(clear_btn).clicked() {
-                                            to_clear = Some(idx);
+                                            to_confirm = Some(idx);
                                         }
 
                                         ui.add_space(8.0);
@@ -78,12 +135,8 @@ pub fn draw_dev_caches(ui: &mut egui::Ui, app: &mut SweepApp) {
                 }
             });
 
-            // Apply deferred clear
-            if let Some(idx) = to_clear {
-                if let Some(item) = app.dev_caches.get(idx) {
-                    let _ = debris_core::delete_path(&item.path);
-                }
-                app.dev_caches.remove(idx);
+            if let Some(idx) = to_confirm {
+                app.confirm_clear_cache = Some(idx);
             }
         });
 }

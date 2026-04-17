@@ -1,13 +1,14 @@
 use eframe::egui::{self, Color32, Style, Visuals};
 use std::collections::HashSet;
 use std::sync::mpsc;
-use debris_core::{DevCacheItem, DiskInfo, OrphanItem, ScanEvent};
+use debris_core::{DevCacheItem, DiskInfo, LaunchAgentItem, OrphanItem, ScanEvent};
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum Section {
     Overview,
     Orphaned,
     DevCaches,
+    LaunchAgents,
 }
 
 pub struct SweepApp {
@@ -15,10 +16,13 @@ pub struct SweepApp {
     pub disk_info: Option<DiskInfo>,
     pub orphans: Vec<OrphanItem>,
     pub dev_caches: Vec<DevCacheItem>,
+    pub launch_agents: Vec<LaunchAgentItem>,
     pub selected: HashSet<usize>,
     pub scan_rx: Option<mpsc::Receiver<ScanEvent>>,
     pub scanning: bool,
     pub confirm_delete: bool,
+    pub confirm_clear_cache: Option<usize>,
+    pub confirm_delete_agent: Option<usize>,
 }
 
 impl SweepApp {
@@ -29,10 +33,13 @@ impl SweepApp {
             disk_info: None,
             orphans: Vec::new(),
             dev_caches: Vec::new(),
+            launch_agents: Vec::new(),
             selected: HashSet::new(),
             scan_rx: None,
             scanning: false,
             confirm_delete: false,
+            confirm_clear_cache: None,
+            confirm_delete_agent: None,
         };
         app.start_scan();
         app
@@ -44,8 +51,11 @@ impl SweepApp {
         self.disk_info = debris_core::get_disk_info(&home).ok();
         self.orphans.clear();
         self.dev_caches.clear();
+        self.launch_agents.clear();
         self.selected.clear();
         self.confirm_delete = false;
+        self.confirm_clear_cache = None;
+        self.confirm_delete_agent = None;
         self.scanning = true;
         self.scan_rx = Some(debris_core::run_scan(home, applications));
     }
@@ -67,8 +77,6 @@ fn setup_theme(ctx: &egui::Context) {
 }
 
 impl eframe::App for SweepApp {
-    /// Drain the scan channel and request repaints while scanning.
-    /// Called before each `ui()` call (and also when the window is hidden but repaint was requested).
     fn logic(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
         if let Some(rx) = &self.scan_rx {
             let mut done = false;
@@ -76,6 +84,7 @@ impl eframe::App for SweepApp {
                 match event {
                     ScanEvent::OrphanFound(item) => self.orphans.push(item),
                     ScanEvent::DevCacheFound(item) => self.dev_caches.push(item),
+                    ScanEvent::LaunchAgentFound(item) => self.launch_agents.push(item),
                     ScanEvent::Done => {
                         done = true;
                     }
@@ -102,6 +111,7 @@ impl eframe::App for SweepApp {
                 Section::Overview => crate::ui::overview::draw_overview(ui, self),
                 Section::Orphaned => crate::ui::orphaned::draw_orphaned(ui, self),
                 Section::DevCaches => crate::ui::dev_caches::draw_dev_caches(ui, self),
+                Section::LaunchAgents => crate::ui::launch_agents::draw_launch_agents(ui, self),
             }
         });
     }
