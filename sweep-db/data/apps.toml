@@ -123,10 +123,3 @@ paths = [
   "Library/Application Support/Comet",
   "Library/Caches/Comet",
 ]
-
-[[apps]]
-name = "Gemini CLI"
-app_bundle = "Gemini.app"
-paths = [
-  ".gemini",
-]

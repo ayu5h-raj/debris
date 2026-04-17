@@ -36,4 +36,14 @@ mod tests {
         assert!(chrome.is_some());
         assert!(!chrome.unwrap().paths.is_empty());
     }
+
+    #[test]
+    fn test_all_entries_are_structurally_valid() {
+        let entries = load_app_entries();
+        for entry in &entries {
+            assert!(!entry.name.is_empty(), "blank name in database");
+            assert!(!entry.app_bundle.is_empty(), "blank app_bundle for {}", entry.name);
+            assert!(!entry.paths.is_empty(), "no paths for {}", entry.name);
+        }
+    }
 }
