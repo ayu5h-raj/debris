@@ -36,8 +36,8 @@ Three crates:
 
 ## Key conventions
 
-- All size values are raw bytes (`u64`); `format_bytes()` in `ui/mod.rs` formats for display
-- List panels sort by size descending at render time (snapshot sort, not in-place)
+- All size values are raw bytes (`u64`); `format_bytes()` in each crate's `ui/mod.rs` formats for display
+- List panels in debris-app sort by size descending at render time (snapshot sort, not in-place)
 - Deletions are deferred out of scroll loops to avoid borrow checker conflicts
 - Confirmation state lives on `SweepApp`: `confirm_delete` (orphans bulk), `confirm_clear_cache: Option<usize>` (dev caches), `confirm_delete_agent: Option<usize>` (launch agents)
 - No clippy warnings allowed (`-D warnings` in CI)
