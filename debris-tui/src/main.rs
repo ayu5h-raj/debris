@@ -4,7 +4,7 @@ mod ui;
 
 use app::TuiApp;
 use crossterm::{
-    event::{DisableMouseCapture, EnableMouseCapture, Event},
+    event::{self as crossterm_event, DisableMouseCapture, EnableMouseCapture, Event},
     execute,
     terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
 };
@@ -17,6 +17,18 @@ fn main() -> io::Result<()> {
     execute!(stdout, EnterAlternateScreen, EnableMouseCapture)?;
     let backend = CrosstermBackend::new(stdout);
     let mut terminal = Terminal::new(backend)?;
+
+    // Restore terminal on panic so the shell is not left broken.
+    let default_hook = std::panic::take_hook();
+    std::panic::set_hook(Box::new(move |info| {
+        let _ = disable_raw_mode();
+        let _ = execute!(
+            io::stdout(),
+            LeaveAlternateScreen,
+            DisableMouseCapture
+        );
+        default_hook(info);
+    }));
 
     let result = run_app(&mut terminal);
 
@@ -38,8 +50,8 @@ fn run_app(terminal: &mut Terminal<CrosstermBackend<io::Stdout>>) -> io::Result<
         app.tick();
         terminal.draw(|f| ui::render(f, &mut app))?;
 
-        if crossterm::event::poll(Duration::from_millis(50))? {
-            if let Event::Key(key) = crossterm::event::read()? {
+        if crossterm_event::poll(Duration::from_millis(50))? {
+            if let Event::Key(key) = crossterm_event::read()? {
                 if crate::event::handle_key(&mut app, key) {
                     return Ok(());
                 }
