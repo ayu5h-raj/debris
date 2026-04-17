@@ -35,6 +35,7 @@ pub struct TuiApp {
     pub agent_cursor: usize,
     pub selected: HashSet<usize>,
     pub confirm: Option<ConfirmAction>,
+    pub auto_selected: bool,
 }
 
 #[allow(dead_code)]
@@ -57,6 +58,7 @@ impl TuiApp {
             agent_cursor: 0,
             selected: HashSet::new(),
             confirm: None,
+            auto_selected: false,
         }
     }
 
@@ -69,6 +71,7 @@ impl TuiApp {
         self.launch_agents.clear();
         self.selected.clear();
         self.confirm = None;
+        self.auto_selected = false;
         self.orphan_cursor = 0;
         self.cache_cursor = 0;
         self.agent_cursor = 0;
@@ -139,6 +142,7 @@ impl TuiApp {
     }
 
     pub fn toggle_select(&mut self) {
+        self.auto_selected = false;
         if self.tab != Tab::Orphaned || self.orphans.is_empty() {
             return;
         }
@@ -157,6 +161,7 @@ impl TuiApp {
                     self.confirm = Some(ConfirmAction::DeleteOrphans);
                 } else if !self.orphans.is_empty() {
                     self.selected.insert(self.orphan_cursor);
+                    self.auto_selected = true;
                     self.confirm = Some(ConfirmAction::DeleteOrphans);
                 }
             }
@@ -178,6 +183,7 @@ impl TuiApp {
         match self.confirm.take() {
             Some(ConfirmAction::DeleteOrphans) => {
                 let mut indices: Vec<usize> = self.selected.iter().cloned().collect();
+                // Sort descending so each removal doesn't shift indices of items still to be removed.
                 indices.sort_unstable_by(|a, b| b.cmp(a));
                 for idx in &indices {
                     if let Some(item) = self.orphans.get(*idx) {
@@ -192,6 +198,7 @@ impl TuiApp {
                     }
                 }
                 self.selected.clear();
+                self.auto_selected = false;
                 self.orphan_cursor = self.orphan_cursor.min(self.orphans.len().saturating_sub(1));
             }
             Some(ConfirmAction::ClearCache(idx)) => {
@@ -218,9 +225,9 @@ impl TuiApp {
 
     pub fn cancel_confirm(&mut self) {
         self.confirm = None;
-        // If we auto-selected for a single-item delete, clear it
-        if self.tab == Tab::Orphaned && self.selected.len() == 1 {
+        if self.auto_selected {
             self.selected.clear();
+            self.auto_selected = false;
         }
     }
 }
