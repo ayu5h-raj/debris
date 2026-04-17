@@ -11,7 +11,7 @@ pub struct DiskInfo {
 
 pub fn get_disk_info(path: &Path) -> io::Result<DiskInfo> {
     let stat = statvfs(path)
-        .map_err(|e| io::Error::new(io::ErrorKind::Other, e))?;
+        .map_err(io::Error::other)?;
     let block_size = stat.block_size() as u64;
     let total = stat.blocks() as u64 * block_size;
     let free = stat.blocks_available() as u64 * block_size;
