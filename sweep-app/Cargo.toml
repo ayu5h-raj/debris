@@ -11,3 +11,4 @@ path = "src/main.rs"
 sweep-core = { path = "../sweep-core" }
 eframe = "0.34"
 egui = "0.34"
+dirs = "5"
