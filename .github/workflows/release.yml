@@ -40,9 +40,9 @@ jobs:
           tar -czf "${ARTIFACT}-${VERSION}.tar.gz" -C "target/${TARGET}/release" debris
           shasum -a 256 "${ARTIFACT}-${VERSION}.tar.gz" > "${ARTIFACT}-${VERSION}.tar.gz.sha256"
 
-          # Package debris-tui
-          tar -czf "${ARTIFACT}-tui-${VERSION}.tar.gz" -C "target/${TARGET}/release" debris-tui
-          shasum -a 256 "${ARTIFACT}-tui-${VERSION}.tar.gz" > "${ARTIFACT}-tui-${VERSION}.tar.gz.sha256"
+          # Package debris-cli
+          tar -czf "${ARTIFACT}-cli-${VERSION}.tar.gz" -C "target/${TARGET}/release" debris-cli
+          shasum -a 256 "${ARTIFACT}-cli-${VERSION}.tar.gz" > "${ARTIFACT}-cli-${VERSION}.tar.gz.sha256"
 
           echo "Done packaging"
 

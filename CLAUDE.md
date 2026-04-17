@@ -9,7 +9,7 @@ cargo test                         # all tests (25 core + 3 db)
 cargo test -p debris-core          # core tests only
 cargo clippy -- -D warnings        # lint (zero warnings required)
 open target/debug/debris           # open already-built binary
-cargo run -p debris-tui            # run TUI app
+cargo run -p debris-tui            # run CLI/TUI app (binary: debris-cli)
 cargo test -p debris-tui           # TUI tests only
 ```
 
