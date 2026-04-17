@@ -8,3 +8,6 @@ sweep-db = { path = "../sweep-db" }
 serde = { workspace = true }
 plist = "1"
 nix = { version = "0.31", features = ["fs"] }
+
+[dev-dependencies]
+tempfile = "3"
