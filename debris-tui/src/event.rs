@@ -100,4 +100,20 @@ mod tests {
         handle_key(&mut app, key(KeyCode::Char('n')));
         assert!(app.confirm.is_none());
     }
+
+    #[test]
+    fn test_d_then_n_clears_auto_selection() {
+        let mut app = make_app();
+        app.tab = Tab::Orphaned;
+        app.orphans = vec![debris_core::OrphanItem {
+            name: "x".into(), paths: vec![], total_size: 0,
+            source: debris_core::OrphanSource::Heuristic,
+        }];
+        handle_key(&mut app, key(KeyCode::Char('d')));
+        assert!(app.confirm.is_some());
+        assert!(app.auto_selected);
+        handle_key(&mut app, key(KeyCode::Char('n')));
+        assert!(app.confirm.is_none());
+        assert!(app.selected.is_empty());
+    }
 }

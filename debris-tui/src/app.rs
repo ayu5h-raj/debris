@@ -32,7 +32,7 @@ pub struct TuiApp {
     pub agent_cursor: usize,
     pub selected: HashSet<usize>,
     pub confirm: Option<ConfirmAction>,
-    pub auto_selected: bool,
+    pub(crate) auto_selected: bool,
 }
 
 impl TuiApp {
