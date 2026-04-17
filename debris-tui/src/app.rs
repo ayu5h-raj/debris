@@ -5,7 +5,6 @@ use debris_core::{
 use std::{collections::HashSet, sync::mpsc};
 
 #[derive(Debug, Clone, PartialEq)]
-#[allow(dead_code)]
 pub enum Tab {
     Overview,
     Orphaned,
@@ -14,14 +13,12 @@ pub enum Tab {
 }
 
 #[derive(Debug)]
-#[allow(dead_code)]
 pub enum ConfirmAction {
     DeleteOrphans,
     ClearCache(usize),
     DeleteAgent(usize),
 }
 
-#[allow(dead_code)]
 pub struct TuiApp {
     pub tab: Tab,
     pub disk_info: Option<DiskInfo>,
@@ -38,7 +35,6 @@ pub struct TuiApp {
     pub auto_selected: bool,
 }
 
-#[allow(dead_code)]
 impl TuiApp {
     pub fn new() -> Self {
         let home = dirs::home_dir().unwrap_or_default();
