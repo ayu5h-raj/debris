@@ -7,7 +7,7 @@ use crate::{
     },
 };
 use std::{path::PathBuf, sync::mpsc, thread};
-use sweep_db::load_app_entries;
+use debris_db::load_app_entries;
 
 #[derive(Debug, Clone)]
 pub enum ScanEvent {

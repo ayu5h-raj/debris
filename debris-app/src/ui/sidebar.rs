@@ -10,7 +10,7 @@ pub fn draw_sidebar(ui: &mut Ui, app: &mut SweepApp) {
 
             // Title
             ui.label(
-                RichText::new("◉ Sweep")
+                RichText::new("◉ Debris")
                     .color(Color32::WHITE)
                     .size(18.0)
                     .strong(),

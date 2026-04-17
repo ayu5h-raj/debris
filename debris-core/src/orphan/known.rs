@@ -1,6 +1,6 @@
 use crate::{dir_size, orphan::{OrphanItem, OrphanSource}};
 use std::path::{Path, PathBuf};
-use sweep_db::AppEntry;
+use debris_db::AppEntry;
 
 pub fn scan_known(entries: &[AppEntry], home: &Path, applications: &Path) -> Vec<OrphanItem> {
     entries
@@ -32,7 +32,7 @@ pub fn scan_known(entries: &[AppEntry], home: &Path, applications: &Path) -> Vec
 #[cfg(test)]
 mod tests {
     use super::*;
-    use sweep_db::AppEntry;
+    use debris_db::AppEntry;
     use std::fs;
     use tempfile::tempdir;
 

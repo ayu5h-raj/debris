@@ -13,9 +13,9 @@ jobs:
       matrix:
         include:
           - target: aarch64-apple-darwin
-            artifact: sweep-macos-arm64
+            artifact: debris-macos-arm64
           - target: x86_64-apple-darwin
-            artifact: sweep-macos-intel
+            artifact: debris-macos-intel
 
     steps:
       - uses: actions/checkout@v4
@@ -26,12 +26,12 @@ jobs:
           targets: ${{ matrix.target }}
 
       - name: Build
-        run: cargo build --release --target ${{ matrix.target }} -p sweep-app
+        run: cargo build --release --target ${{ matrix.target }} -p debris-app
 
       - name: Package
         run: |
           VERSION=${GITHUB_REF_NAME}
-          BINARY=target/${{ matrix.target }}/release/sweep
+          BINARY=target/${{ matrix.target }}/release/debris
           ARCHIVE=${{ matrix.artifact }}-${VERSION}.tar.gz
           tar -czf "$ARCHIVE" -C "$(dirname $BINARY)" "$(basename $BINARY)"
           echo "ARCHIVE=$ARCHIVE" >> $GITHUB_ENV

@@ -1,12 +1,12 @@
 [package]
-name = "sweep-core"
+name = "debris-core"
 version = "0.1.0"
 edition = "2021"
 license.workspace = true
 repository.workspace = true
 
 [dependencies]
-sweep-db = { path = "../sweep-db" }
+debris-db = { path = "../debris-db" }
 serde = { workspace = true }
 plist = "1"
 nix = { version = "0.31", features = ["fs"] }

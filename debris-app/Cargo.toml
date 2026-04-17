@@ -1,16 +1,16 @@
 [package]
-name = "sweep-app"
+name = "debris-app"
 version = "0.1.0"
 edition = "2021"
 license.workspace = true
 repository.workspace = true
 
 [[bin]]
-name = "sweep"
+name = "debris"
 path = "src/main.rs"
 
 [dependencies]
-sweep-core = { path = "../sweep-core" }
+debris-core = { path = "../debris-core" }
 eframe = "0.34"
 egui = "0.34"
 dirs = "5"

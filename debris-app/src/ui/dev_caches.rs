@@ -81,7 +81,7 @@ pub fn draw_dev_caches(ui: &mut egui::Ui, app: &mut SweepApp) {
             // Apply deferred clear
             if let Some(idx) = to_clear {
                 if let Some(item) = app.dev_caches.get(idx) {
-                    let _ = sweep_core::delete_path(&item.path);
+                    let _ = debris_core::delete_path(&item.path);
                 }
                 app.dev_caches.remove(idx);
             }

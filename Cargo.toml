@@ -1,10 +1,10 @@
 [workspace]
-members = ["sweep-db", "sweep-core", "sweep-app"]
+members = ["debris-db", "debris-core", "debris-app"]
 resolver = "2"
 
 [workspace.package]
 license = "MIT"
-repository = "https://github.com/ayu5h-raj/sweep"
+repository = "https://github.com/ayu5h-raj/debris"
 
 [workspace.dependencies]
 serde = { version = "1", features = ["derive"] }

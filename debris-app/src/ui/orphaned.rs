@@ -79,7 +79,7 @@ pub fn draw_orphaned(ui: &mut egui::Ui, app: &mut SweepApp) {
                                         for idx in &indices {
                                             if let Some(item) = app.orphans.get(*idx) {
                                                 for path in &item.paths {
-                                                    let _ = sweep_core::delete_path(path);
+                                                    let _ = debris_core::delete_path(path);
                                                 }
                                             }
                                         }
@@ -187,7 +187,7 @@ pub fn draw_orphaned(ui: &mut egui::Ui, app: &mut SweepApp) {
                 if let Some(idx) = to_delete_single {
                     if let Some(item) = app.orphans.get(idx) {
                         for path in &item.paths {
-                            let _ = sweep_core::delete_path(path);
+                            let _ = debris_core::delete_path(path);
                         }
                     }
                     app.orphans.remove(idx);

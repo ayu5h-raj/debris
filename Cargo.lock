@@ -715,6 +715,35 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f27ae1dd37df86211c42e150270f82743308803d90a6f6e6651cd730d5e1732f"
 
 [[package]]
+name = "debris-app"
+version = "0.1.0"
+dependencies = [
+ "debris-core",
+ "dirs",
+ "eframe",
+ "egui",
+]
+
+[[package]]
+name = "debris-core"
+version = "0.1.0"
+dependencies = [
+ "debris-db",
+ "nix",
+ "plist",
+ "serde",
+ "tempfile",
+]
+
+[[package]]
+name = "debris-db"
+version = "0.1.0"
+dependencies = [
+ "serde",
+ "toml",
+]
+
+[[package]]
 name = "deranged"
 version = "0.5.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3013,35 +3042,6 @@ name = "strict-num"
 version = "0.1.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "6637bab7722d379c8b41ba849228d680cc12d0a45ba1fa2b48f2a30577a06731"
-
-[[package]]
-name = "sweep-app"
-version = "0.1.0"
-dependencies = [
- "dirs",
- "eframe",
- "egui",
- "sweep-core",
-]
-
-[[package]]
-name = "sweep-core"
-version = "0.1.0"
-dependencies = [
- "nix",
- "plist",
- "serde",
- "sweep-db",
- "tempfile",
-]
-
-[[package]]
-name = "sweep-db"
-version = "0.1.0"
-dependencies = [
- "serde",
- "toml",
-]
 
 [[package]]
 name = "syn"

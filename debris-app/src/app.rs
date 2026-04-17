@@ -1,7 +1,7 @@
 use eframe::egui::{self, Color32, Style, Visuals};
 use std::collections::HashSet;
 use std::sync::mpsc;
-use sweep_core::{DevCacheItem, DiskInfo, OrphanItem, ScanEvent};
+use debris_core::{DevCacheItem, DiskInfo, OrphanItem, ScanEvent};
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum Section {
@@ -41,13 +41,13 @@ impl SweepApp {
     pub fn start_scan(&mut self) {
         let home = dirs::home_dir().unwrap_or_default();
         let applications = std::path::PathBuf::from("/Applications");
-        self.disk_info = sweep_core::get_disk_info(&home).ok();
+        self.disk_info = debris_core::get_disk_info(&home).ok();
         self.orphans.clear();
         self.dev_caches.clear();
         self.selected.clear();
         self.confirm_delete = false;
         self.scanning = true;
-        self.scan_rx = Some(sweep_core::run_scan(home, applications));
+        self.scan_rx = Some(debris_core::run_scan(home, applications));
     }
 }
 
