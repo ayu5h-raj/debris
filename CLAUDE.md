@@ -9,6 +9,8 @@ cargo test                         # all tests (25 core + 3 db)
 cargo test -p debris-core          # core tests only
 cargo clippy -- -D warnings        # lint (zero warnings required)
 open target/debug/debris           # open already-built binary
+cargo run -p debris-tui            # run TUI app
+cargo test -p debris-tui           # TUI tests only
 ```
 
 ## Architecture
@@ -18,6 +20,7 @@ Three crates:
 - **`debris-db`** — compile-time TOML database mapping known app bundle IDs to their leftover paths. `load_app_entries()` returns `Vec<AppEntry>`.
 - **`debris-core`** — all scanning logic, cleaner, disk info. Exports via `lib.rs`. Key types: `OrphanItem`, `DevCacheItem`, `LaunchAgentItem`, `ScanEvent`.
 - **`debris-app`** — egui 0.34 / eframe 0.34 GUI. `SweepApp` in `app.rs` holds all state; `logic()` drains the scan channel, `ui()` renders.
+- **`debris-tui`** — ratatui 0.29 / crossterm 0.28 TUI. `TuiApp` in `app.rs` holds all state; `event.rs` maps keys to mutations; `ui/` renders each panel.
 
 ## Scanner pipeline
 

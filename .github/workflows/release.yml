@@ -26,16 +26,25 @@ jobs:
           targets: ${{ matrix.target }}
 
       - name: Build
-        run: cargo build --release --target ${{ matrix.target }} -p debris-app
+        run: |
+          cargo build --release --target ${{ matrix.target }} -p debris-app
+          cargo build --release --target ${{ matrix.target }} -p debris-tui
 
       - name: Package
         run: |
           VERSION=${GITHUB_REF_NAME}
-          BINARY=target/${{ matrix.target }}/release/debris
-          ARCHIVE=${{ matrix.artifact }}-${VERSION}.tar.gz
-          tar -czf "$ARCHIVE" -C "$(dirname $BINARY)" "$(basename $BINARY)"
-          echo "ARCHIVE=$ARCHIVE" >> $GITHUB_ENV
-          shasum -a 256 "$ARCHIVE" > "$ARCHIVE.sha256"
+          TARGET=${{ matrix.target }}
+          ARTIFACT=${{ matrix.artifact }}
+
+          # Package debris (GUI)
+          tar -czf "${ARTIFACT}-${VERSION}.tar.gz" -C "target/${TARGET}/release" debris
+          shasum -a 256 "${ARTIFACT}-${VERSION}.tar.gz" > "${ARTIFACT}-${VERSION}.tar.gz.sha256"
+
+          # Package debris-tui
+          tar -czf "${ARTIFACT}-tui-${VERSION}.tar.gz" -C "target/${TARGET}/release" debris-tui
+          shasum -a 256 "${ARTIFACT}-tui-${VERSION}.tar.gz" > "${ARTIFACT}-tui-${VERSION}.tar.gz.sha256"
+
+          echo "Done packaging"
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
